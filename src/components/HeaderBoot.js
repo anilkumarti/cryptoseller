@@ -1,7 +1,7 @@
 import React from "react";
-import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
+import { Button, Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 
-const HeaderBoot = () => {
+const HeaderBoot = (props) => {
   return (
     <Navbar expand="lg" className="bg-body-teritary" style={{ background: "blue" }}>
       <Container fluid >
@@ -13,7 +13,7 @@ const HeaderBoot = () => {
             <Nav.Link href='about.js'> About</Nav.Link>
           </Nav>
           <Nav>
-          <Nav.Link> Cart</Nav.Link> 
+           <Button onClick={props.onShowCart}> Cart </Button>
           </Nav>
         </Navbar.Collapse>
       </Container>

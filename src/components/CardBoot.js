@@ -3,7 +3,7 @@ import { Card, Button, Image } from "react-bootstrap";
 
 const CardBoot = (props) => {
   return (
-    <Card style={{ width: "17rem", height: " 20 rem" }} className="mb-5">
+    <Card  className="mb-5">
       <Card.Body>
         <h4>{props.tittle}</h4>
         <Image
