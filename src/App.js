@@ -2,11 +2,12 @@ import { useState } from "react";
 
 import FooterBoot from "./components/FooterBoot";
 import HeaderBoot from "./components/HeaderBoot";
-import Items from "./components/Items";
+
 import MainBrandName from "./components/MainBrandName";
 import Products from "./components/Products";
 
 import Cart from "./components/Cart";
+import Provider from "./components/context/Provider";
 
 function App() {
   const [showCart, setShowCart] = useState(true);
@@ -28,18 +29,18 @@ function App() {
     { title: "Coffee Cup", imageSrc: "./img/Cofee.png", price: "6.99" },
   ];
   return (
-    <div className="App">
+    <Provider>
       <HeaderBoot onShowCart={showCartHandler} />
       {showCart && (
         <Cart  hideCart={hideCartHandler} />
       )}
       <MainBrandName></MainBrandName>
-      <Products Products={musicProducts} title="Music" />
-      <Products Products={merchProducts} title="Merchandise" />
+      <Products products={musicProducts} title="Music" />
+      <Products products={merchProducts} title="Merchandise" />
       {/* <Items products={musicProducts}/> */}
 
       <FooterBoot />
-    </div>
+    </Provider>
   );
 }
 

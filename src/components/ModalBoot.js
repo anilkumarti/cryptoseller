@@ -5,6 +5,7 @@ const Backdrops = (props) => {
    return <div className={classes.backdrop} onClick={props.hideCart}></div>;
 };
 const Modaloverlays = (props) => {
+  
   return ( <div className={classes.modal}>
     <div className={classes.content}> {props.children}</div>
   </div> );

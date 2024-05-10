@@ -3,6 +3,7 @@ import { Container, Row,Col } from "react-bootstrap";
 import CardBoot from "./CardBoot";
 
 
+
 const Products = (props) => {
 
  
@@ -11,10 +12,11 @@ const Products = (props) => {
          <h1>{props.title}</h1>
       <Row>
      
-        {props.Products &&
-          props.Products.map((product) => {
+        {props.products &&
+          props.products.map((product) => {
             return   <Col md={6} sm={12}  key={Math.random()} >  
-              <CardBoot    title={product.title} ButtonText={`add ${product.title}`} price={product.price} /> 
+              <CardBoot  product={product} id={Math.random()} /> 
+            
             
             </Col>;
           })}
