@@ -5,9 +5,10 @@ import HeaderBoot from "./components/HeaderBoot";
 
 import MainBrandName from "./components/MainBrandName";
 import Products from "./components/Products";
-
+import About from "./components/pages/About";
 import Cart from "./components/Cart";
 import Provider from "./components/context/Provider";
+import { BrowserRouter as Router , Route, Routes} from "react-router-dom";
 
 function App() {
   const [showCart, setShowCart] = useState(true);
@@ -29,18 +30,26 @@ function App() {
     { title: "Coffee Cup", imageSrc: "./img/Cofee.png", price: "6.99" },
   ];
   return (
-    <Provider>
-      <HeaderBoot onShowCart={showCartHandler} />
-      {showCart && (
-        <Cart  hideCart={hideCartHandler} />
-      )}
-      <MainBrandName></MainBrandName>
-      <Products products={musicProducts} title="Music" />
-      <Products products={merchProducts} title="Merchandise" />
-      {/* <Items products={musicProducts}/> */}
+  
+      <Provider>
+        <Router>
+        <HeaderBoot onShowCart={showCartHandler} />
+        {showCart && <Cart hideCart={hideCartHandler} />}
+   <MainBrandName/>
 
-      <FooterBoot />
-    </Provider>
+<Routes>
+  <Route path='/' element={<Products products={musicProducts} title="Music" />}/> 
+   <Route path='/about' element={<About/>}  />
+</Routes>
+        
+        {/* <Products products={merchProducts} title="Merchandise" /> */}
+        {/* <Items products={musicProducts}/> */}
+
+        <FooterBoot />
+
+        </Router>
+      </Provider>
+ 
   );
 }
 
