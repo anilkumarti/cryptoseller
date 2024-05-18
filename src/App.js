@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import Home from "./components/pages/Home";
 import FooterBoot from "./components/FooterBoot";
 import HeaderBoot from "./components/HeaderBoot";
 
@@ -38,8 +38,10 @@ function App() {
    <MainBrandName/>
 
 <Routes>
-  <Route path='/' element={<Products products={musicProducts} title="Music" />}/> 
+  <Route path='/store' element={<Products products={merchProducts} title="Merchanidise" />}/> 
+  <Route path='/store' element={<Products products={musicProducts} title="Music" />}/> 
    <Route path='/about' element={<About/>}  />
+   <Route path="/" element={ <Home/>}/>
 </Routes>
         
         {/* <Products products={merchProducts} title="Merchandise" /> */}
