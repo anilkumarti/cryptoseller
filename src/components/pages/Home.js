@@ -1,59 +1,76 @@
-import React, { Fragment, useEffect, useState, useCallback } from "react";
+import React, {
+  Fragment,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [cancel,setCancel]=useState(false);
-   const cancelRetryHandler=()=> {
-    console.log("cancel retry")
-     setCancel(!cancel);
-   }
+  const [cancel, setCancel] = useState(false);
+  const cancelRetryHandler = () => {
+    console.log("cancel retry");
+    setCancel(!cancel);
+  };
   const fetchMovieHandler = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch("https://swapi.dev/api/film/");
+      const res = await fetch("https://swapi.dev/api/films/");
       if (!res.ok) {
         throw new Error("Something went wrong");
       }
 
       const data = await res.json();
-      const transformedData = data.results.map((movie) => {
-        return {
-          id: movie.episode_id,
-          open: movie.opening_crawl,
-        };
-      });
-      setMovies(transformedData);
+
+      setMovies(data.results);
     } catch (error) {
       setError(error.message);
     }
     setIsLoading(false);
   }, []);
+
   useEffect(() => {
-     if(error && !cancel) {
-      const timer=setTimeout(() => {
-      
+    fetchMovieHandler();
+  }, []);
+  useEffect(() => {
+    if (error && !cancel) {
+      const timer = setTimeout(() => {
         fetchMovieHandler();
-         
-      }, 100);
-  
-      return ()=> {
-         clearTimeout(timer)
-      }
-     }
-  }, [fetchMovieHandler,error,cancel]);
+      }, 500);
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [fetchMovieHandler, error, cancel]);
+
+
+
+  const transformedMovies = useMemo(() => {
+    return (
+      movies &&
+      movies.map((movie) => {
+        return {
+          id: movie.episode_id,
+          open: movie.opening_crawl,
+        };
+      })
+    );
+  }, [movies]);
 
   let content = <p>Something went wrong</p>;
-  if (movies.length > 0) {
-    content = movies.map((movie) => (
-      <li>
-        {movie.title} {movie.id} 
+  if (transformedMovies.length > 0) {
+    content = transformedMovies.map((movie) => (
+      <li key={movie.id}>
+        {movie.open} {movie.id}
       </li>
     ));
   }
-  if (movies.length === 0) {
+  if (transformedMovies.length === 0) {
     content = <p> No movies found </p>;
   }
   if (error) {
