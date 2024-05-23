@@ -11,6 +11,10 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [cancel, setCancel] = useState(false);
+  const [tittle, setTittle]=useState('');
+  const  [openingText, setOpenText]=useState('');
+  const [releaseDate,setReleaseDate]=useState('');
+  const [newObj, setNewObj]=useState([])
   const cancelRetryHandler = () => {
     console.log("cancel retry");
     setCancel(!cancel);
@@ -79,10 +83,31 @@ const Home = () => {
   if (isLoading) {
     content = <p> loading..</p>;
   }
-
+  const movieSubmitHandler=(e)=> {
+    e.preventDefault()
+    const NewMovieObj= {tittle:tittle, openingText:openingText,releaseDate:releaseDate};
+    setNewObj([...newObj,NewMovieObj]);
+     console.log(newObj);
+  }
   return (
     <Fragment>
       <section>
+      <form> 
+        <label htmlFor=""> Title</label>
+        <input type='text' id='title' onChange={(e)=> 
+           setTittle(e.target.value)
+        } />  
+        <label htmlFor="openText"> Opening Text</label>
+       <input type="text" id="openText"  onChange={(e)=> 
+           setOpenText(e.target.value)
+        }/>
+       <label htmlFor="releaseDate"> Release Date</label>
+       <input type="date" id="releaseDate"  onChange={(e)=> 
+           setReleaseDate(e.target.value)
+        }/>
+       <input type="submit"  onClick={movieSubmitHandler}/>
+
+      </form>
         <button onClick={fetchMovieHandler}> Fetch Movies</button>
         <button onClick={cancelRetryHandler}> Cancel Retry</button>
       </section>
