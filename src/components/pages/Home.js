@@ -11,10 +11,10 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [cancel, setCancel] = useState(false);
-  const [tittle, setTittle]=useState('');
-  const  [openingText, setOpenText]=useState('');
-  const [releaseDate,setReleaseDate]=useState('');
-  const [newObj, setNewObj]=useState([])
+  const [title, setTitle] = useState("");
+  const [openingText, setOpenText] = useState("");
+  const [releaseDate, setReleaseDate] = useState("");
+
   const cancelRetryHandler = () => {
     console.log("cancel retry");
     setCancel(!cancel);
@@ -23,14 +23,27 @@ const Home = () => {
     setIsLoading(true);
     setError(null);
     try {
-      const res = await fetch("https://swapi.dev/api/films/");
+      const res = await fetch(
+        "https://firstproject-3c465-default-rtdb.firebaseio.com/movies.json"
+      );
       if (!res.ok) {
         throw new Error("Something went wrong");
       }
 
       const data = await res.json();
+      const loadedMovies = [];
+      console.log("data above loaded movies", typeof(data));
+      for (const key in data) {
+        console.log("key", key)
+        loadedMovies.push({
+          id: key,
+          title: data[key].title,
+          openingText: data[key].openingText,
+          releaseDate: data[key].releaseDate,
+        });
+      }
 
-      setMovies(data.results);
+      setMovies(loadedMovies);
     } catch (error) {
       setError(error.message);
     }
@@ -52,29 +65,15 @@ const Home = () => {
     }
   }, [fetchMovieHandler, error, cancel]);
 
-
-
-  const transformedMovies = useMemo(() => {
-    return (
-      movies &&
-      movies.map((movie) => {
-        return {
-          id: movie.episode_id,
-          open: movie.opening_crawl,
-        };
-      })
-    );
-  }, [movies]);
-
   let content = <p>Something went wrong</p>;
-  if (transformedMovies.length > 0) {
-    content = transformedMovies.map((movie) => (
-      <li key={movie.id}>
-        {movie.open} {movie.id}
-      </li>
-    ));
+  if (movies.length > 0) {
+    content = movies.map((movie) => <li key={movie.id}>{movie.title} {movie.openingText}
+       <button onClick={ ()=> {
+         movieRemoveHandler(movie.id)
+       }}> Remove Movie</button>
+    </li>);
   }
-  if (transformedMovies.length === 0) {
+  if (movies.length === 0) {
     content = <p> No movies found </p>;
   }
   if (error) {
@@ -83,33 +82,70 @@ const Home = () => {
   if (isLoading) {
     content = <p> loading..</p>;
   }
-  const movieSubmitHandler=(e)=> {
-    e.preventDefault()
-    const NewMovieObj= {tittle:tittle, openingText:openingText,releaseDate:releaseDate};
-    setNewObj([...newObj,NewMovieObj]);
-     console.log(newObj);
+  async function movieSubmitHandler(e) {
+    e.preventDefault();
+    const NewMovieObj = {
+      title,
+      openingText,
+      releaseDate,
+    };
+
+    const response = await fetch(
+      "https://firstproject-3c465-default-rtdb.firebaseio.com/movies.json",
+      {
+        method: "POST",
+        body: JSON.stringify(NewMovieObj),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    console.log("data of firebase", data);
   }
+
+  async function movieRemoveHandler(id) {
+     try { 
+     const res= await fetch(`https://firstproject-3c465-default-rtdb.firebaseio.com/movies/${id}.json`, {
+      method:"delete"
+    })
+    const data = await res.json();
+ 
+
+    setMovies(movies.filter(movie=> id!==movie.id));
+  } catch(error) {
+    setError(error.message);
+  }
+
+  }
+
   return (
     <Fragment>
       <section>
-      <form> 
-        <label htmlFor=""> Title</label>
-        <input type='text' id='title' onChange={(e)=> 
-           setTittle(e.target.value)
-        } />  
-        <label htmlFor="openText"> Opening Text</label>
-       <input type="text" id="openText"  onChange={(e)=> 
-           setOpenText(e.target.value)
-        }/>
-       <label htmlFor="releaseDate"> Release Date</label>
-       <input type="date" id="releaseDate"  onChange={(e)=> 
-           setReleaseDate(e.target.value)
-        }/>
-       <input type="submit"  onClick={movieSubmitHandler}/>
-
-      </form>
+        <form onSubmit={movieSubmitHandler}>
+          <label htmlFor=""> Title</label>
+          <input
+            type="text"
+            id="title"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <label htmlFor="openText"> Opening Text</label>
+          <input
+            type="text"
+            id="openText"
+            onChange={(e) => setOpenText(e.target.value)}
+          />
+          <label htmlFor="releaseDate"> Release Date</label>
+          <input
+            type="date"
+            id="releaseDate"
+            onChange={(e) => setReleaseDate(e.target.value)}
+          />
+          <input type="submit" />
+        </form>
         <button onClick={fetchMovieHandler}> Fetch Movies</button>
         <button onClick={cancelRetryHandler}> Cancel Retry</button>
+       
       </section>
       <section>
         <ul>{content}</ul>
