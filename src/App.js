@@ -2,13 +2,15 @@ import { useState } from "react";
 import Home from "./components/pages/Home";
 import FooterBoot from "./components/FooterBoot";
 import HeaderBoot from "./components/HeaderBoot";
-
+import ContactUs from "./components/pages/ContactUs";
 import MainBrandName from "./components/MainBrandName";
 import Products from "./components/Products";
 import About from "./components/pages/About";
 import Cart from "./components/Cart";
 import Provider from "./components/context/Provider";
-import { BrowserRouter as Router , Route, Routes} from "react-router-dom";
+import { BrowserRouter as Router , Route } from "react-router-dom";
+import { Switch } from "react-router-dom/cjs/react-router-dom.min";
+
 
 function App() {
   const [showCart, setShowCart] = useState(true);
@@ -37,12 +39,15 @@ function App() {
         {showCart && <Cart hideCart={hideCartHandler} />}
    <MainBrandName/>
 
-<Routes>
-  <Route path='/store' element={<Products products={merchProducts} title="Merchanidise" />}/> 
-  <Route path='/store' element={<Products products={musicProducts} title="Music" />}/> 
-   <Route path='/about' element={<About/>}  />
-   <Route path="/" element={ <Home/>}/>
-</Routes>
+<Switch>
+  
+  <Route path='/store/merch' > <Products products={merchProducts} title="Merchanidise" /> </Route>
+  <Route path='/store/music' > {<Products products={musicProducts} title="Music" />}</Route>
+  <Route path="/contact" component={ContactUs} /> 
+   <Route path='/about' component={About}  />
+   <Route path="/" component={Home}/>
+  
+</Switch>
         
         {/* <Products products={merchProducts} title="Merchandise" /> */}
         {/* <Items products={musicProducts}/> */}

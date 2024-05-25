@@ -2,11 +2,11 @@ import React, { useContext } from "react";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import {
   Button,
-  Nav,
   Navbar,
   Badge,
   NavItem,
   Container,
+  NavLink,
 } from "react-bootstrap";
 import ContextInfo from "./context/ContextInfo";
 import { Link } from "react-router-dom";
@@ -18,15 +18,22 @@ const HeaderBoot = (props) => {
   }, 0);
   return (
     <header>
-      <Navbar bg="dark" >
-        <Container >
-          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+      <Navbar bg="light">
+        <Container>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <NavItem>
             <Link to="/">Home </Link>
           </NavItem>
           <NavItem>
-            <Link to="/store">Store</Link>
+            <Link to="/store/music">Music Store</Link>
           </NavItem>
+          <NavItem>
+            <Link to="/store/merch">Merchandise Store</Link>
+          </NavItem>
+          <NavItem>
+            <Link to="/contact">Contact Us</Link>
+          </NavItem>
+
           <NavItem>
             <Link to="/about">About us </Link>
           </NavItem>
