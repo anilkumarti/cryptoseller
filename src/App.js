@@ -5,12 +5,12 @@ import HeaderBoot from "./components/HeaderBoot";
 import ContactUs from "./components/pages/ContactUs";
 import MainBrandName from "./components/MainBrandName";
 import Products from "./components/Products";
+import ProductDetails from "./components/pages/ProductDetails";
 import About from "./components/pages/About";
 import Cart from "./components/Cart";
 import Provider from "./components/context/Provider";
-import { BrowserRouter as Router , Route } from "react-router-dom";
-import { Switch } from "react-router-dom/cjs/react-router-dom.min";
 
+import { BrowserRouter as Router, Route, Switch ,Redirect} from "react-router-dom";
 
 function App() {
   const [showCart, setShowCart] = useState(true);
@@ -40,12 +40,17 @@ function App() {
    <MainBrandName/>
 
 <Switch>
-  
+    <Route path='/' exact> <Redirect to='/home'/>  </Route>
   <Route path='/store/merch' > <Products products={merchProducts} title="Merchanidise" /> </Route>
   <Route path='/store/music' > {<Products products={musicProducts} title="Music" />}</Route>
   <Route path="/contact" component={ContactUs} /> 
    <Route path='/about' component={About}  />
-   <Route path="/" component={Home}/>
+   <Route path="/home" component={Home} />
+   <Route path='/products/:productID' product={[...musicProducts,...merchProducts]} > 
+   <ProductDetails/> 
+    </Route>
+
+   
   
 </Switch>
         

@@ -1,7 +1,8 @@
 import React, {useContext} from "react";
 import { Card, Button, Image } from "react-bootstrap";
 import ContextInfo from "./context/ContextInfo";
- 
+ import { Link } from "react-router-dom/cjs/react-router-dom.min";
+
 const CardBoot = (props) => {
   const ctx=useContext(ContextInfo);
       const addItemHandler=(e)=> {
@@ -11,6 +12,8 @@ const CardBoot = (props) => {
        
       }
   return (
+    <Link 
+    to={{ pathname: `/products/${props.id}`, state: { product: props.product } }}> 
     <Card  className="mb-5">
       <Card.Body>
         <h4>{props.product.tittle}</h4>
@@ -25,9 +28,11 @@ const CardBoot = (props) => {
         <div>
           <Button className="btn-sm" onClick={addItemHandler}>Add+</Button>
           {props.price} 
-        </div>
+        </div> 
+       
       </Card.Body>
     </Card>
+    </Link>
   );
 };
 

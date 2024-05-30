@@ -22,7 +22,7 @@ const HeaderBoot = (props) => {
         <Container>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <NavItem>
-            <Link to="/">Home </Link>
+            <Link to="/home">Home </Link>
           </NavItem>
           <NavItem>
             <Link to="/store/music">Music Store</Link>
